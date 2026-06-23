@@ -62,14 +62,24 @@
   },
 
   "아름이": {
-    "aliases": ["아름", "아름이카뉴"],
-    "label": "아름이",
-    "brand": { "name": "아름이", "suffix": "" },
-    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
-    "voice": "처음 쓸 때 확정.",
-    "cta": "",
-    "draft": true,
-    "_note": "색·말투·CTA 미정. 처음 쓸 때 물어보고 채울 것."
+    "aliases": ["아름", "아름이카뉴", "aroom", "aroomtoon", "aroom.toon", "인스타툰"],
+    "label": "아름이 (크림 + 더스티 틸, 손그림 인스타툰)",
+    "brand": { "name": "aroom.toon", "suffix": "" },
+    "theme": {
+      "bg": "#fdf6ef",
+      "accent": "#5EA6AE",
+      "text": "#3a322c",
+      "text_rgb": "58,50,44",
+      "bubble_gray_bg": "#f1e9e0",
+      "question_text": "#3a322c",
+      "answer_text": "#ffffff",
+      "body_font": "'Gaegu', cursive",
+      "extra_fonts": ["https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap"]
+    },
+    "voice": "공대생 아름이의 인스타툰(@aroom.toon). 연애·사랑·공감 주제. 따뜻하고 다정하되 '나 혼자만 알기 힘든 이야기 🎀💀' 같은 공감+살짝 다크유머. 손그림 만화 결, 사람냄새 진하게. 줄표 금지.",
+    "cta": "@aroom.toon",
+    "draft": false,
+    "_source": "인스타 @aroom.toon(손그림 캐릭터: 더스티 틸 머리·핑크 볼, 크림 배경) + 바이오(연애·사랑·공감, 인스타툰) 읽고 튜닝. 핑크가 이미 여러 스킨에 있어 캐릭터 머리색인 더스티 틸로 차별화. 손글씨 Gaegu로 만화 느낌. (연애 테마 따뜻한 핑크/코랄로 바꾸고 싶으면 accent만 교체.)"
   },
 
   "릴나은": {
