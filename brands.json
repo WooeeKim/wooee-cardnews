@@ -1,0 +1,67 @@
+{
+  "_설명": "브랜드 스킨 모음. 색(theme) + 말투(voice) + 마무리 멘트(cta)를 한 세트로 묶은 것. 스킬이 '어떤 카뉴?'를 물을 때 이 목록을 보여주고, 고른 스킨을 스펙의 brand/theme/cta 기본값으로 쓴다. draft=true 인 스킨은 색·말투가 아직 임시라, 처음 쓸 때 사용자에게 확정받고 이 파일을 고쳐 저장한다. 새 스킨은 이 파일에 항목 하나 추가하면 된다(오늘은 ○○카뉴).",
+
+  "랩미-파티": {
+    "aliases": ["랩미카뉴", "랩미 파티", "레이빙", "파티"],
+    "label": "랩미 magazine · 파티(레이빙)",
+    "brand": { "name": "랩미", "suffix": "magazine" },
+    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
+    "voice": "참가자 실제 후기체 그대로. ㅎㅎ/ㅋㅋ/말줄임 살리고 담백하게. 신나고 들뜬 파티 분위기. 줄표 금지.",
+    "cta": "다음 파티는 @labmeet.love",
+    "draft": false
+  },
+
+  "랩미-와인": {
+    "aliases": ["와인", "와인파티", "랩미 와인"],
+    "label": "랩미 magazine · 와인파티",
+    "brand": { "name": "랩미", "suffix": "magazine" },
+    "theme": { "bg": "#120b0d", "accent": "#C97A86", "bubble_gray_bg": "#2a2226", "answer_text": "#3a0f17" },
+    "voice": "조용하고 차분한 와인바 톤. 후기체 살리되 톤은 한 단계 낮게. 줄표 금지.",
+    "cta": "다음 파티는 @labmeet.love",
+    "draft": false
+  },
+
+  "엑스레이": {
+    "aliases": ["exray", "ex-ray", "엑스레이카뉴"],
+    "label": "EX-Ray",
+    "brand": { "name": "EX-Ray", "suffix": "" },
+    "theme": { "bg": "#0b0d12", "accent": "#5BA7D9", "bubble_gray_bg": "#23262e", "answer_text": "#06243a" },
+    "voice": "전 연인 카톡 분석 서비스. 사람한테 와닿게, 살짝 서늘하고 담담하게. 과장·영업 톤 금지, 줄표 금지.",
+    "cta": "exray.kr",
+    "draft": true,
+    "_note": "색·말투 임시값. 처음 쓸 때 사용자에게 확정받고 갱신할 것."
+  },
+
+  "김우이": {
+    "aliases": ["우이킴", "wooeekim", "김우이카뉴"],
+    "label": "김우이",
+    "brand": { "name": "김우이", "suffix": "" },
+    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
+    "voice": "본인 개인 카뉴. 말투·분위기 처음 쓸 때 확정.",
+    "cta": "",
+    "draft": true,
+    "_note": "색·말투·CTA 미정. 처음 쓸 때 물어보고 채울 것."
+  },
+
+  "아름이": {
+    "aliases": ["아름", "아름이카뉴"],
+    "label": "아름이",
+    "brand": { "name": "아름이", "suffix": "" },
+    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
+    "voice": "처음 쓸 때 확정.",
+    "cta": "",
+    "draft": true,
+    "_note": "색·말투·CTA 미정. 처음 쓸 때 물어보고 채울 것."
+  },
+
+  "릴나은": {
+    "aliases": ["lilxaeun", "릴나은카뉴", "나은"],
+    "label": "릴나은",
+    "brand": { "name": "릴나은", "suffix": "" },
+    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
+    "voice": "처음 쓸 때 확정.",
+    "cta": "@lilxaeun",
+    "draft": true,
+    "_note": "색·말투 미정. 처음 쓸 때 물어보고 채울 것."
+  }
+}
