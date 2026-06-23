@@ -43,14 +43,19 @@
   },
 
   "김우이": {
-    "aliases": ["우이킴", "wooeekim", "김우이카뉴"],
-    "label": "김우이",
-    "brand": { "name": "김우이", "suffix": "" },
-    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
-    "voice": "본인 개인 카뉴. 말투·분위기 처음 쓸 때 확정.",
-    "cta": "",
-    "draft": true,
-    "_note": "색·말투·CTA 미정. 처음 쓸 때 물어보고 채울 것."
+    "aliases": ["우이킴", "wooeekim", "kimwooee", "김우이카뉴"],
+    "label": "김우이 (다크 + 쨍한 핑크)",
+    "brand": { "name": "kimwooee", "suffix": "" },
+    "theme": {
+      "bg": "#0e0e10",
+      "accent": "#E83E9C",
+      "bubble_gray_bg": "#2a2a2e",
+      "answer_text": "#3a0a22"
+    },
+    "voice": "디자이너 개인 카뉴(@kimwooee). 어두운 배경에 쨍한 핑크가 확 튀는 자신감 있는 톤. 위트 살짝, 담백하되 밝게. 줄표 금지.",
+    "cta": "@kimwooee",
+    "draft": false,
+    "_source": "인스타 프로필(쨍한 핑크 아바타) 기준. 다크 배경 + vivid pink."
   },
 
   "아름이": {
@@ -66,12 +71,20 @@
 
   "릴나은": {
     "aliases": ["lilxaeun", "릴나은카뉴", "나은"],
-    "label": "릴나은",
-    "brand": { "name": "릴나은", "suffix": "" },
-    "theme": { "bg": "#0e0e10", "accent": "#5DCAA5", "bubble_gray_bg": "#2a2a2e", "answer_text": "#04342C" },
-    "voice": "처음 쓸 때 확정.",
+    "label": "릴나은 (연한 세이지 + 잉크)",
+    "brand": { "name": "lilxaeun", "suffix": "" },
+    "theme": {
+      "bg": "#f6f9f4",
+      "accent": "#6FA77F",
+      "text": "#16201a",
+      "text_rgb": "22,32,26",
+      "bubble_gray_bg": "#e8efe6",
+      "question_text": "#16201a",
+      "answer_text": "#ffffff"
+    },
+    "voice": "디자이너(카이스트 미대생) 개인 카뉴(@lilxaeun). 연한 세이지 초록 종이 위 잉크 텍스트. 차분하고 감성적이되 깔끔하게. 줄표 금지.",
     "cta": "@lilxaeun",
-    "draft": true,
-    "_note": "색·말투 미정. 처음 쓸 때 물어보고 채울 것."
+    "draft": false,
+    "_source": "인스타 프로필(연한 세이지 아바타) 기준. 밝은 세이지 배경 + 잉크 텍스트. 배경이 연한 초록을 담고 액센트는 읽히도록 살짝 진한 세이지."
   }
 }
