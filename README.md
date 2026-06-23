@@ -56,7 +56,7 @@
 이 폴더를 `~/.claude/skills/` 아래에 두면 스킬로 잡힙니다.
 
 ```bash
-git clone https://github.com/WooeeKim/랩미카드뉴스 ~/.claude/skills/interview-cardnews
+git clone https://github.com/WooeeKim/labme-cardnews ~/.claude/skills/interview-cardnews
 ```
 
 그다음 클로드에게 "○○파티 후기 카드뉴스 만들어줘"라고 하면, 후기를 모아 스펙을 채우고 HTML을 뽑아줍니다.
