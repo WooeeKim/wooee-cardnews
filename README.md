@@ -4,7 +4,7 @@
 
 랩미(labme) 파티 후기 카드뉴스를 만들면서 굳어진 양식이지만, 색만 바꾸면 다른 행사나 제품, 모임 후기에도 그대로 씁니다.
 
-만든사람: lilxaeun
+만든사람: 우이킴 (WooeeKim)
 
 ## 왜 만들었나
 
@@ -56,7 +56,7 @@
 이 폴더를 `~/.claude/skills/` 아래에 두면 스킬로 잡힙니다.
 
 ```bash
-git clone https://github.com/WooeeKim/labme-cardnews ~/.claude/skills/interview-cardnews
+git clone https://github.com/WooeeKim/cardnews-labmeet ~/.claude/skills/interview-cardnews
 ```
 
 그다음 클로드에게 "○○파티 후기 카드뉴스 만들어줘"라고 하면, 후기를 모아 스펙을 채우고 HTML을 뽑아줍니다.
