@@ -44,18 +44,21 @@
 
   "김우이": {
     "aliases": ["우이킴", "wooeekim", "kimwooee", "김우이카뉴"],
-    "label": "김우이 (다크 + 쨍한 핑크)",
+    "label": "김우이 (에어리 화이트 + 쨍한 핑크)",
     "brand": { "name": "kimwooee", "suffix": "" },
     "theme": {
-      "bg": "#0e0e10",
+      "bg": "#fafafc",
       "accent": "#E83E9C",
-      "bubble_gray_bg": "#2a2a2e",
-      "answer_text": "#3a0a22"
+      "text": "#14141a",
+      "text_rgb": "20,20,26",
+      "bubble_gray_bg": "#efeff3",
+      "question_text": "#14141a",
+      "answer_text": "#ffffff"
     },
-    "voice": "디자이너 개인 카뉴(@kimwooee). 어두운 배경에 쨍한 핑크가 확 튀는 자신감 있는 톤. 위트 살짝, 담백하되 밝게. 줄표 금지.",
+    "voice": "디자이너 개인 카뉴(@kimwooee). 미니멀하고 에어리한 흰 배경에 쨍한 핑크가 포인트(작업물 sky sandwich 결: 하늘·여백·차분·사색). 장난기 한 스푼('거울 찾으셨다고요?' 같은), 담백하고 깔끔하게. 줄표 금지.",
     "cta": "@kimwooee",
     "draft": false,
-    "_source": "인스타 프로필(쨍한 핑크 아바타) 기준. 다크 배경 + vivid pink."
+    "_source": "인스타 @kimwooee + 바이오 링크 skysandwich 프로젝트(미니멀·하늘·여백·흰 배경) 읽고 튜닝. 쨍한 핑크는 사용자 지정. 다크 변형도 가능(되돌리려면 bg #0e0e10, answer_text #3a0a22, text류 제거)."
   },
 
   "아름이": {
@@ -82,9 +85,9 @@
       "question_text": "#16201a",
       "answer_text": "#ffffff"
     },
-    "voice": "디자이너(카이스트 미대생) 개인 카뉴(@lilxaeun). 연한 세이지 초록 종이 위 잉크 텍스트. 차분하고 감성적이되 깔끔하게. 줄표 금지.",
+    "voice": "디자이너·개발자(카이스트 미대생, @lilxaeun). 연한 세이지 종이 위 잉크 텍스트. 캐주얼하고 위트있고 솔직 담백, 자기비하 개그도 자연스럽게(스레드 톤: '개짜증나서', '쉽가능' 결). 너무 차분하기보다 사람냄새 나게. 줄표 금지.",
     "cta": "@lilxaeun",
     "draft": false,
-    "_source": "인스타 프로필(연한 세이지 아바타) 기준. 밝은 세이지 배경 + 잉크 텍스트. 배경이 연한 초록을 담고 액센트는 읽히도록 살짝 진한 세이지."
+    "_source": "인스타 @lilxaeun 아바타(연한 세이지) + Threads(@lilxaeun) 톤 읽고 튜닝. 캐주얼·위트·솔직. 밝은 세이지 배경 + 잉크. 액센트는 읽히도록 살짝 진한 세이지."
   }
 }
