@@ -97,9 +97,9 @@ def slides():
         # 말풍선
         '<div style="position:absolute;left:80px;top:300px;width:64px;height:64px;'
         'border-radius:50%;background:rgba(255,255,255,0.18);"></div>'
-        f'<div style="position:absolute;left:168px;top:300px;background:{BUBBLE_GRAY};color:#eee;'
+        f'<div class="qb" style="position:absolute;left:168px;top:300px;background:{BUBBLE_GRAY};color:#eee;'
         'font-size:36px;padding:20px 30px;border-radius:34px 34px 34px 10px;">대전이 왜 노잼이야?</div>'
-        f'<div style="position:absolute;right:80px;top:415px;background:{ACCENT};color:{ANSWER_TEXT};'
+        f'<div class="ab" style="position:absolute;right:80px;top:415px;background:{ACCENT};color:{ANSWER_TEXT};'
         'font-size:36px;font-weight:500;padding:20px 34px;border-radius:34px 34px 10px 34px;">랩미 있는데?</div>'
         # 헤드라인
         '<div class="h" style="top:858px;font-size:96px;line-height:1.14;">연구는 혼자,<br>저녁은 같이.</div>'
@@ -204,6 +204,117 @@ PAGE = ('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">'
         '.slide{{box-shadow:none!important;}}</style></head><body>{slide}</body></html>')
 
 
+# ── 편집형 HTML ─────────────────────────────────────────────────────────────
+# 브라우저에서 글자를 클릭해 직접 고치고, 버튼으로 PNG를 내려받는다.
+# 에셋은 data URI로 인라인해서(파일 fetch 차단 회피) 어디서 열든 그대로 굽힌다.
+def _data_uri(path, mime):
+    import base64
+    with open(path, "rb") as f:
+        return f"data:{mime};base64," + base64.b64encode(f.read()).decode()
+
+
+EDITOR_CSS = """
+body{background:#1b1b1d;margin:0;padding:40px 20px 120px;font-family:'Pretendard',sans-serif;}
+.bar{position:fixed;left:0;top:0;right:0;z-index:50;display:flex;align-items:center;gap:16px;
+  padding:14px 22px;background:rgba(20,20,22,0.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid #2c2c30;color:#eaeaea;font-size:14px;}
+.bar b{color:#5DCAA5;}
+.bar .sp{flex:1;}
+.bar button{background:#5DCAA5;color:#04342C;border:0;border-radius:999px;
+  padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.bar input[type=range]{accent-color:#5DCAA5;}
+.tip{color:#9a9a9e;font-size:13px;}
+.frames{display:flex;flex-direction:column;align-items:center;gap:28px;margin-top:64px;}
+.frame{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.holder{width:calc(1080px * var(--z,0.5));height:calc(1350px * var(--z,0.5));}
+.holder .slide{transform:scale(var(--z,0.5));transform-origin:top left;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);border-radius:6px;}
+.frame .dl{background:#26262a;color:#eaeaea;border:1px solid #3a3a40;border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+[contenteditable]{outline:none;cursor:text;border-radius:4px;transition:box-shadow .12s;}
+[contenteditable]:hover{box-shadow:0 0 0 2px rgba(93,202,165,0.35);}
+[contenteditable]:focus{box-shadow:0 0 0 2px #5DCAA5;}
+"""
+
+EDITOR_JS = """
+import h2c from 'https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.11/+esm';
+
+// 글자를 직접 고칠 수 있게 contenteditable 부여 (이미지/위치는 건드리지 않는다)
+const SEL = '.h,.body,.brand,.counter,.label,.note,.cta,.qb,.ab,.kicker';
+document.querySelectorAll('.slide').forEach(s => {
+  s.querySelectorAll(SEL).forEach(el => { el.contentEditable = 'true'; el.spellcheck = false; });
+});
+
+// 화면에선 transform:scale 로 줄여 보여주지만, 캡처는 변형 없는 오프스크린 클론을
+// 원본 1080x1350 으로 떠서 굽는다 (부모 transform 때문에 잘리는 문제 회피).
+const sandbox = document.createElement('div');
+sandbox.style.cssText = 'position:fixed;left:-100000px;top:0;width:1080px;height:0;overflow:visible;';
+document.body.appendChild(sandbox);
+const pad = n => String(n).padStart(2, '0');
+
+async function shoot(slide, name) {
+  await document.fonts.ready;
+  const bg = getComputedStyle(slide).backgroundColor || '#0e0e10';
+  const clone = slide.cloneNode(true);
+  clone.style.transform = 'none';
+  clone.style.boxShadow = 'none';
+  clone.style.borderRadius = '0';
+  sandbox.innerHTML = '';
+  sandbox.appendChild(clone);
+  await new Promise(r => setTimeout(r, 20));
+  const canvas = await h2c(clone, { scale: 2, width: 1080, height: 1350,
+    backgroundColor: bg, useCORS: true, logging: false });
+  sandbox.innerHTML = '';
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+document.querySelectorAll('.frame .dl').forEach((btn, i) => {
+  btn.onclick = () => shoot(btn.parentElement.querySelector('.slide'), `labme-intro-${pad(i+1)}.png`);
+});
+document.getElementById('all').onclick = async () => {
+  const slides = [...document.querySelectorAll('.frame .slide')];
+  for (let i = 0; i < slides.length; i++) {
+    await shoot(slides[i], `labme-intro-${pad(i+1)}.png`);
+    await new Promise(r => setTimeout(r, 400));
+  }
+};
+const z = document.getElementById('zoom');
+const setZ = () => document.documentElement.style.setProperty('--z', z.value);
+z.oninput = setZ; setZ();
+"""
+
+
+def build_editor(slide_list):
+    heart = _data_uri(os.path.join(HERE, "assets", "heart.png"), "image/png")
+    smoke = _data_uri(os.path.join(HERE, "assets", "smoke.webp"), "image/webp")
+    # 폰트를 data URI @font-face 로 인라인 → html-to-image 캡처 시 네트워크 0,
+    # 어디서 열든(오프라인 포함) Pretendard 그대로 굽힌다.
+    font = _data_uri(os.path.join(HERE, "assets", "Pretendard.woff2"), "font/woff2")
+    font_face = (f"@font-face{{font-family:'Pretendard';font-weight:45 920;"
+                 f"font-style:normal;font-display:swap;src:url({font}) format('woff2');}}")
+    frames = []
+    for i, s in enumerate(slide_list, start=1):
+        s = s.replace("assets/heart.png", heart).replace("assets/smoke.webp", smoke)
+        frames.append(f'<div class="frame"><div class="holder">{s}</div>'
+                      f'<button class="dl">{i:02d} · 이 장 PNG 저장</button></div>')
+    bar = ('<div class="bar"><b>랩미 카드뉴스 편집기</b>'
+           '<span class="tip">글자를 클릭해서 바로 고치세요. 다 고치면 저장 버튼 ›</span>'
+           '<span class="sp"></span>'
+           '<label class="tip">보기 크기 <input id="zoom" type="range" min="0.25" max="1" step="0.05" value="0.5"></label>'
+           '<button id="all">전체 8장 PNG 저장</button></div>')
+    return (
+        '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<title>랩미 카드뉴스 편집기</title>'
+        '<style>' + font_face + CSS + EDITOR_CSS + '</style></head><body>'
+        + bar + '<div class="frames">' + "".join(frames) + '</div>'
+        + '<script type="module">' + EDITOR_JS + '</script></body></html>'
+    )
+
+
 def export_png(slide_list, scale=2, prefix="labme-intro"):
     chrome = chrome_path()
     if not chrome:
@@ -237,5 +348,8 @@ if __name__ == "__main__":
     with open(os.path.join(HERE, "service-intro.html"), "w", encoding="utf-8") as f:
         f.write(build_html(sl))
     print(f"HTML 생성: service-intro.html ({len(sl)}장)", file=sys.stderr)
+    with open(os.path.join(HERE, "editor.html"), "w", encoding="utf-8") as f:
+        f.write(build_editor(sl))
+    print("편집기 생성: editor.html", file=sys.stderr)
     if "--png" in sys.argv:
         export_png(sl)
