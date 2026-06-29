@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 out/service-intro/png/*.png
 out/service-intro/.tmp-*.html
+out/exray-intro/png/*.png
+out/exray-intro/.tmp-*.html
