@@ -5,3 +5,5 @@ out/service-intro/png/*.png
 out/service-intro/.tmp-*.html
 out/exray-intro/png/*.png
 out/exray-intro/.tmp-*.html
+out/exray-report/png/*.png
+out/exray-report/.tmp-*.html
