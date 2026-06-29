@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """랩미 서비스 소개 카드뉴스 (8장).
 
-디자인 시스템(references/design-system.md)의 토큰/위치 공식을 그대로 따르되,
-서비스 소개에 맞게 인터뷰 템플릿 대신 heading+body 카드로 구성하고
-브랜드 에셋(뚱뚱한 하트, 피어오르는 연기)을 적재적소에 얹었다.
+엑스레이 앱의 '따뜻한 미니멀' 톤으로 재설계한 버전.
+- 따뜻한 다크 배경 + 미세한 도트 텍스처(클로드식 평평한 검정 대신).
+- 잉크 단계 위계(불투명도만으로 만든 위계 대신 톤을 단계적으로).
+- 본문 글씨 축소(34→29), 헤드라인도 절제(96→62).
+- "magazine" 워드마크, 제목 앞 세로 액센트 바(│) 제거 → 깔끔한 위계로 대체.
+- 브랜드 에셋(하트)은 글로우를 죽이고 작게, 거들기만.
 
 - 결합 HTML(service-intro.html) + 슬라이드별 PNG(png/) 둘 다 생성.
 - PNG는 Chrome 헤드리스로 1080x1350(기본 2배=2160x2700) 캡처.
@@ -12,41 +15,47 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# --- 테마 (랩미-파티 / 민트 다크, PARTY 프론트와 동일) ----------------------
-BG = "#0e0e10"
-ACCENT = "#5DCAA5"
-ANSWER_TEXT = "#04342C"
-BUBBLE_GRAY = "#2a2a2e"
+# --- 테마 (랩미-파티 / 따뜻한 민트 다크) ------------------------------------
+BG = "#161512"            # 따뜻한 차콜(차가운 #0e0e10 대신)
+ACCENT = "#5DCAA5"        # 브랜드 민트
+ANSWER_TEXT = "#08231c"   # 답변 말풍선 글자(액센트 어두운 동계색)
+BUBBLE_GRAY = "#26251f"   # 질문 말풍선 배경(배경과 동계)
+INK = "#f4f2ec"           # 헤드라인/제목(따뜻한 화이트)
+INK_RGB = "244,242,236"   # 본문·보조 글자 rgba 기준
 PRETENDARD = ("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/"
               "dist/web/static/pretendard.css")
 
 CSS = f"""*{{margin:0;padding:0;box-sizing:border-box;}}
 body{{font-family:'Pretendard',sans-serif;}}
-.slide{{width:1080px;height:1350px;background:{BG};color:#fff;position:relative;overflow:hidden;}}
+.slide{{width:1080px;height:1350px;color:{INK};position:relative;overflow:hidden;
+  background-color:{BG};
+  background-image:radial-gradient(rgba({INK_RGB},0.045) 1px, transparent 1.5px);
+  background-size:30px 30px;}}
 .slide h1,.slide h2,.slide p,.slide span{{word-break:keep-all;}}
-.brand{{position:absolute;left:80px;top:64px;font-size:42px;font-weight:500;}}
+.brand{{position:absolute;left:80px;top:72px;font-size:34px;font-weight:800;letter-spacing:-0.5px;}}
 .brand span{{color:{ACCENT};}}
-.counter{{position:absolute;right:80px;top:72px;font-size:33px;color:rgba(255,255,255,0.4);}}
-.h{{position:absolute;left:80px;font-weight:700;color:#fff;letter-spacing:-1.5px;}}
-.body{{position:absolute;left:80px;width:920px;font-size:34px;line-height:1.74;color:rgba(255,255,255,0.82);}}
-.kicker{{position:absolute;left:80px;font-size:30px;font-weight:600;letter-spacing:3px;color:{ACCENT};}}
-.label{{position:absolute;left:80px;font-size:36px;color:{ACCENT};}}
-.note{{position:absolute;left:80px;width:920px;font-size:33px;line-height:1.6;color:rgba(255,255,255,0.55);}}
-.cta{{position:absolute;left:80px;font-size:40px;font-weight:600;color:{ACCENT};}}
+.counter{{position:absolute;left:80px;bottom:62px;font-size:27px;font-weight:600;
+  line-height:1;letter-spacing:1px;color:rgba({INK_RGB},0.34);}}
+.h{{position:absolute;left:80px;width:900px;font-weight:800;color:{INK};
+  letter-spacing:-1px;line-height:1.22;}}
+.body{{position:absolute;left:80px;width:900px;font-size:29px;line-height:1.78;
+  color:rgba({INK_RGB},0.72);}}
+.body b{{color:{INK};font-weight:700;}}
+.label{{position:absolute;left:80px;font-size:30px;font-weight:600;color:{ACCENT};}}
+.note{{position:absolute;left:80px;width:900px;font-size:29px;line-height:1.7;
+  color:rgba({INK_RGB},0.55);}}
+.cta{{position:absolute;left:80px;font-size:36px;font-weight:700;color:{ACCENT};}}
 .heart{{position:absolute;pointer-events:none;}}
-.smoke{{position:absolute;left:0;bottom:0;width:1080px;height:880px;object-fit:cover;object-position:bottom;
-  opacity:0.30;-webkit-mask-image:linear-gradient(to top,#000 0%,transparent 92%);
-  mask-image:linear-gradient(to top,#000 0%,transparent 92%);}}
-.bar{{position:absolute;left:80px;width:4px;border-radius:2px;background:{ACCENT};}}"""
+.smoke{{position:absolute;left:0;bottom:0;width:1080px;height:820px;object-fit:cover;
+  object-position:bottom;opacity:0.18;
+  -webkit-mask-image:linear-gradient(to top,#000 0%,transparent 90%);
+  mask-image:linear-gradient(to top,#000 0%,transparent 90%);}}"""
 
-ARROW = (f'<svg class="arrow" style="position:absolute;right:74px;top:1218px;" width="78" '
-         f'height="46" viewBox="0 0 78 46" fill="none"><path d="M6 23 H68 '
-         f'M48 7 L70 23 L48 39" stroke="{ACCENT}" stroke-width="6" '
-         f'stroke-linecap="round" stroke-linejoin="round"/></svg>')
+ARROW = (f'<div class="arrow" style="position:absolute;right:84px;bottom:62px;'
+         f'font-size:27px;font-weight:600;line-height:1;color:{ACCENT};">&gt;</div>')
 
 
 def chrome_path(explicit=None):
@@ -64,21 +73,21 @@ def chrome_path(explicit=None):
 
 
 def brand(n, total, arrow=True):
-    s = ('<div class="brand">랩미 <span>magazine</span></div>'
-         f'<div class="counter">{n:02d} / {total:02d}</div>')
+    s = ('<div class="brand">Lab<span>Meet</span></div>'
+         f'<div class="counter">{n:02d}</div>')
     return s, (ARROW if arrow else "")
 
 
-# ── 슬라이드 정의 (heading+body 카드, 위치는 디자인 시스템 공식 기반) ──────────
-def card(n, total, kicker, heading, body_html, *, hsize=54, htop=352,
-         bfs=34, blh=1.74, btop=500, extra="", arrow=True):
+# ── 슬라이드 정의 (heading+body 카드) ─────────────────────────────────────────
+# │바·kicker 없이 제목→본문만으로 깔끔하게. 위치는 절제된 스케일에 맞춰 재배치.
+def card(n, total, heading, body_html, *, hsize=40, htop=360,
+         bfs=29, blh=1.78, btop=None, extra="", arrow=True, halign="left"):
     head, arr = brand(n, total, arrow)
-    k = (f'<div class="kicker" style="top:{htop-58}px;">{kicker}</div>') if kicker else ""
+    if btop is None:
+        btop = htop + hsize + 56
     return (
-        '<div class="slide">' + head + extra + k +
-        f'<div class="bar" style="top:{htop+4}px;height:{hsize-6}px;"></div>'
-        f'<div class="h" style="top:{htop}px;left:120px;font-size:{hsize}px;'
-        f'white-space:nowrap;">{heading}</div>'
+        '<div class="slide">' + head + extra +
+        f'<div class="h" style="top:{htop}px;font-size:{hsize}px;text-align:{halign};">{heading}</div>'
         f'<div class="body" style="top:{btop}px;font-size:{bfs}px;line-height:{blh};">{body_html}</div>'
         + arr + '</div>'
     )
@@ -88,97 +97,93 @@ def slides():
     total = 8
     out = []
 
-    # 01 · 커버 — 채팅 말풍선 후킹 + 하트
+    # 01 · 커버 — 채팅 말풍선 후킹 + 하트(글로우 죽이고 작게)
     head, arr = brand(1, total)
     out.append(
         '<div class="slide">' + head +
-        '<img class="heart" src="assets/heart.png" style="right:64px;top:548px;width:330px;opacity:0.92;'
-        'filter:drop-shadow(0 24px 60px rgba(93,202,165,0.28));">'
+        '<img class="heart" src="assets/heart.png" style="right:84px;top:560px;width:268px;opacity:0.9;'
+        'filter:drop-shadow(0 18px 44px rgba(93,202,165,0.18));">'
         # 말풍선
-        '<div style="position:absolute;left:80px;top:300px;width:64px;height:64px;'
-        'border-radius:50%;background:rgba(255,255,255,0.18);"></div>'
-        f'<div class="qb" style="position:absolute;left:168px;top:300px;background:{BUBBLE_GRAY};color:#eee;'
-        'font-size:36px;padding:20px 30px;border-radius:34px 34px 34px 10px;">대전이 왜 노잼이야?</div>'
-        f'<div class="ab" style="position:absolute;right:80px;top:415px;background:{ACCENT};color:{ANSWER_TEXT};'
-        'font-size:36px;font-weight:500;padding:20px 34px;border-radius:34px 34px 10px 34px;">랩미 있는데?</div>'
-        # 헤드라인
-        '<div class="h" style="top:858px;font-size:96px;line-height:1.14;">연구는 혼자,<br>저녁은 같이.</div>'
-        f'<div class="label" style="top:1176px;">랩미가 뭐 하는 곳이냐면 ›</div>'
+        '<div style="position:absolute;left:80px;top:300px;width:60px;height:60px;'
+        'border-radius:50%;background:rgba(244,242,236,0.12);"></div>'
+        f'<div class="qb" style="position:absolute;left:160px;top:300px;background:{BUBBLE_GRAY};'
+        f'color:rgba({INK_RGB},0.9);font-size:33px;padding:18px 28px;'
+        'border-radius:30px 30px 30px 8px;">대전이 왜 노잼이야?</div>'
+        f'<div class="ab" style="position:absolute;right:80px;top:408px;background:{ACCENT};color:{ANSWER_TEXT};'
+        'font-size:33px;font-weight:600;padding:18px 30px;border-radius:30px 30px 8px 30px;">랩미 있는데?</div>'
+        # 헤드라인 (절제: 96→62)
+        '<div class="h" style="top:892px;font-size:62px;line-height:1.2;">연구는 혼자,<br>저녁은 같이.</div>'
+        '<div class="label" style="top:1188px;">랩미가 뭐 하는 곳이냐면 ›</div>'
         + arr + '</div>'
     )
 
-    # 02 · 랩미가 뭐냐면 (서비스 정의 + 파티/앱 한 번에 깔기)
+    # 02 · 랩미가 뭐냐면
     out.append(card(
-        2, total, None,
+        2, total,
         "혹시 대학원생이에요?",
         "심심한데 바쁘기도 하잖아요. 그런 대학(원)생이랑 연구자들끼리 만나는 오프라인 파티예요. "
         "소개팅 해달라 부탁하기도 기 빨리고요. 결이 비슷한 사람들끼리, "
-        "<b style=\"color:#fff;font-weight:600;\">랩미가 대신 모아드려요.</b> "
+        "<b>랩미가 대신 모아드려요.</b> "
         "파티만 있는 건 아니고, 셀소랑 커뮤니티까지 랩미 안에서 이어져요.",
-        hsize=56, btop=496, bfs=34, blh=1.74,
+        halign="center",
     ))
 
-    # 03 · 누가 와요 (해요체 일관)
+    # 03 · 누가 와요
     out.append(card(
-        3, total, None,
+        3, total,
         "랩실 밖에선 다 처음 보는 사이",
         "카이스트, 충남대, 서울대. 각자 자리에서 열심히 사는 사람들이 와요. "
         "아무나 만나고 싶진 않은 사람, 연구만 하다 사람이 그리워진 사람. "
-        "<b style=\"color:#fff;font-weight:600;\">결국 여기로 다 모여요.</b>",
-        hsize=50, btop=496,
+        "<b>결국 여기로 다 모여요.</b>",
     ))
 
     # 04 · 파티 — 연기 + 반전 후킹
     out.append(card(
-        4, total, None,
+        4, total,
         "기 안 빨리게, 알잘딱으로",
         "신청만 하면 자리는 저희가 채워둘게요. 내향인 편, 외향인 편으로 나눠서 열려요. "
         "신나는 레이빙도, 조용한 와인파티도 있어요. "
-        "<b style=\"color:#fff;font-weight:600;\">누가 올지는 안 알려드려요.</b> "
+        "<b>누가 올지는 안 알려드려요.</b> "
         "현장에서 직접 확인하기.",
-        hsize=56, btop=496,
         extra='<img class="smoke" src="assets/smoke.webp">',
     ))
 
     # 05 · 호스피탤리티
     out.append(card(
-        5, total, None,
+        5, total,
         "즐기기만 하면 돼요",
         "무제한 논알콜 샴페인이랑 치즈 플레이트까지 준비해둘게요. "
         "어색하게 서 있을 틈 없게, 분위기는 저희가 만들어요. 나머지는 그냥 즐기시면 돼요.",
-        hsize=58, btop=520,
     ))
 
     # 06 · 앱 (셀소 + 커뮤니티)
     out.append(card(
-        6, total, None,
+        6, total,
         "파티 끝나도 랩미는 안 끝나요",
         "셀프소개팅 게시판 ‘셀소’에서 마음 가는 사람한테 먼저 말 걸어보고, "
         "커뮤니티에선 연구 자랑이든 코웍 제안이든 가볍게 밍글링부터. "
-        "<b style=\"color:#fff;font-weight:600;\">굳이 파티에 안 와도</b> 랩미 안에서 이어져요.",
-        hsize=52, btop=496,
+        "<b>굳이 파티에 안 와도</b> 랩미 안에서 이어져요.",
     ))
 
     # 07 · 신뢰 — 카이스트 운영진 + 작은 하트
     out.append(card(
-        7, total, None,
+        7, total,
         "만드는 사람도 결국 같은 솔로",
-        "랩미는 <b style=\"color:#fff;font-weight:600;\">카이스트 사람들이 직접</b> 만들어가요. "
+        "랩미는 <b>카이스트 사람들이 직접</b> 만들어가요. "
         "심심하고 바쁜 마음 누구보다 잘 아니까, 기 안 빨리게 자리 하나하나 신경 써요. "
         "운영진도 똑같이 랩실과 집만 반복하던 사람들이거든요.",
-        hsize=50, btop=496,
-        extra='<img class="heart" src="assets/heart.png" style="right:96px;top:946px;width:188px;opacity:0.8;'
-              'filter:drop-shadow(0 16px 36px rgba(93,202,165,0.22));">',
+        extra='<img class="heart" src="assets/heart.png" style="right:104px;top:968px;width:156px;opacity:0.7;'
+              'filter:drop-shadow(0 12px 28px rgba(93,202,165,0.14));">',
     ))
 
     # 08 · 마감 — 수미상관 + 하트, 화살표 없음
     head, _ = brand(8, total, arrow=False)
     out.append(
         '<div class="slide">' + head +
-        '<img class="heart" src="assets/heart.png" style="right:72px;top:600px;width:300px;opacity:0.92;'
-        'filter:drop-shadow(0 24px 60px rgba(93,202,165,0.28));">'
-        '<div class="h" style="top:340px;font-size:84px;line-height:1.16;">연구는 혼자.<br>저녁은 같이.</div>'
-        '<div class="note" style="top:1060px;">다음 파티 일정이랑 신청은 인스타에서 안내하고 있어요. '
+        '<img class="heart" src="assets/heart.png" style="right:92px;top:612px;width:244px;opacity:0.9;'
+        'filter:drop-shadow(0 18px 44px rgba(93,202,165,0.18));">'
+        '<div class="h" style="top:360px;font-size:58px;line-height:1.2;">연구는 혼자.<br>저녁은 같이.</div>'
+        '<div class="note" style="top:1072px;">다음 파티 일정이랑 신청은 인스타에서 안내하고 있어요. '
         '궁금한 건 DM으로 편하게 물어보세요.</div>'
         '<div class="cta" style="top:1196px;">@labmeet.love</div>'
         '</div>'
@@ -189,7 +194,7 @@ def slides():
 def build_html(slide_list):
     return (
         '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">'
-        '<title>랩미 magazine · 서비스 소개</title>'
+        '<title>랩미 · 서비스 소개</title>'
         f'<link rel="stylesheet" href="{PRETENDARD}">'
         '<style>' + CSS +
         'body{background:#f2f0e9;display:flex;flex-direction:column;align-items:center;'
@@ -220,7 +225,7 @@ body{background:#1b1b1d;margin:0;padding:40px 20px 120px;font-family:'Pretendard
   border-bottom:1px solid #2c2c30;color:#eaeaea;font-size:14px;}
 .bar b{color:#5DCAA5;}
 .bar .sp{flex:1;}
-.bar button{background:#5DCAA5;color:#04342C;border:0;border-radius:999px;
+.bar button{background:#5DCAA5;color:#08231c;border:0;border-radius:999px;
   padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
 .bar input[type=range]{accent-color:#5DCAA5;}
 .tip{color:#9a9a9e;font-size:13px;}
@@ -240,7 +245,7 @@ EDITOR_JS = """
 import h2c from 'https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.11/+esm';
 
 // 글자를 직접 고칠 수 있게 contenteditable 부여 (이미지/위치는 건드리지 않는다)
-const SEL = '.h,.body,.brand,.counter,.label,.note,.cta,.qb,.ab,.kicker';
+const SEL = '.h,.body,.brand,.counter,.label,.note,.cta,.qb,.ab';
 document.querySelectorAll('.slide').forEach(s => {
   s.querySelectorAll(SEL).forEach(el => { el.contentEditable = 'true'; el.spellcheck = false; });
 });
@@ -254,7 +259,7 @@ const pad = n => String(n).padStart(2, '0');
 
 async function shoot(slide, name) {
   await document.fonts.ready;
-  const bg = getComputedStyle(slide).backgroundColor || '#0e0e10';
+  const bg = getComputedStyle(slide).backgroundColor || '#161512';
   const clone = slide.cloneNode(true);
   clone.style.transform = 'none';
   clone.style.boxShadow = 'none';
