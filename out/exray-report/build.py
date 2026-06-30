@@ -189,9 +189,10 @@ def slides():
 
     # 02 · 목차 (실제 8섹션)
     toc_items = [
-        "어떻게 시작됐는지", "헤어진 진짜 이유", "어디서 식었는지",
-        "명대사 모음", "둘 다 들어봐", "내 & 상대 캐릭터",
-        "상대의 속마음", "재회 가이드",
+        "누가 더 잘못했냐면", "처음엔 어색했던 그 한 줄로",
+        "카톡이 말한 진짜 이유 Top 3", "천천히 식기 시작한 날",
+        "다정했던 한 줄, 무너진 한 줄", "팩폭 타임",
+        "둘은 각자 어떤 연애 캐릭터야?", "재회? 솔직히 말해줄게",
     ]
     rows = ""
     for i, t in enumerate(toc_items, 1):
@@ -223,7 +224,7 @@ def slides():
     head, arr = brand(3, total)
     out.append(
         '<div class="slide">' + head +
-        head_block("CHAPTER 02 · 헤어진 진짜 이유", "헤어진 이유를,<br>Top 3로 잘라줘요.", htop=326, hsize=46) +
+        head_block("카톡이 말한 진짜 이유", "카톡이 말한,<br>진짜 이유 Top 3.", htop=326, hsize=46) +
         f'<div class="panel" style="top:548px;">{rrows}</div>'
         + arr + '</div>'
     )
@@ -249,7 +250,7 @@ def slides():
     head, arr = brand(4, total)
     out.append(
         '<div class="slide">' + head +
-        head_block("CHAPTER 03 · 어디서 식었는지", "어디서부터 식었는지,<br>한 줄로 보여요.", htop=326, hsize=46) +
+        head_block("관계 타임라인", "정확히 어느 날부터,<br>식기 시작했는지.", htop=326, hsize=46) +
         f'<div class="panel" style="top:548px;padding-top:54px;">{tl_panel}</div>'
         + arr + '</div>'
     )
@@ -270,7 +271,7 @@ def slides():
     head, arr = brand(5, total)
     out.append(
         '<div class="slide">' + head +
-        head_block("CHAPTER 04 · 명대사 모음", "오고 간 명대사,<br>무드별로 모아줘요.", htop=326, hsize=46) +
+        head_block("명대사", "다정했던 한 줄,<br>무너진 한 줄.", htop=326, hsize=46) +
         f'<div class="panel" style="top:548px;">{mrows}</div>'
         + arr + '</div>'
     )
@@ -281,16 +282,16 @@ def slides():
     me_html = "".join(f'<div class="fchip">{x}</div>' for x in me_items)
     them_html = "".join(f'<div class="fchip">{x}</div>' for x in them_items)
     faults = (
-        '<div class="plab">책임 비율 (감정 빼고 행동으로)</div>'
+        '<div class="plab">책임도 (감정 빼고 행동으로)</div>'
         '<div class="faults">'
-        f'<div class="fcol"><div class="fname">나</div><div class="fpct">32%</div>{me_html}</div>'
-        f'<div class="fcol them"><div class="fname">상대</div><div class="fpct hi">68%</div>{them_html}</div>'
+        f'<div class="fcol"><div class="fname">나</div><div class="fpct">36%</div>{me_html}</div>'
+        f'<div class="fcol them"><div class="fname">상대</div><div class="fpct hi">64%</div>{them_html}</div>'
         '</div>'
     )
     head, arr = brand(6, total)
     out.append(
         '<div class="slide">' + head +
-        head_block("CHAPTER 05 · 둘 다 들어봐", "둘 다 까봤어요.<br>팩폭 갑니다.", htop=326, hsize=46) +
+        head_block("팩폭 타임", "둘 다 까봤어요.<br>팩폭 갑니다.", htop=326, hsize=46) +
         f'<div class="panel" style="top:548px;">{faults}</div>'
         + arr + '</div>'
     )
@@ -304,16 +305,16 @@ def slides():
         '<div class="plab" style="margin-bottom:14px;">끝내 못 보낸 한마디</div>'
         '<div class="quote" style="font-size:30px;">“그때 좀 더 표현할걸. 근데 이제 와서 뭐.”</div>'
         '<div style="height:38px;"></div>'
-        '<div class="plab" style="margin-bottom:10px;">재회 가능성</div>'
+        '<div class="plab" style="margin-bottom:10px;">재회 권장도</div>'
         '<div style="display:flex;align-items:flex-end;gap:22px;">'
-        '<div class="gnum" style="font-size:104px;">18<span>%</span></div>'
-        '<div class="gsub" style="padding-bottom:14px;">미련은 있지만,<br>먼저 안 움직임</div></div>'
+        '<div class="gnum" style="font-size:104px;">12<span>%</span></div>'
+        '<div class="tag" style="margin-bottom:20px;">비추</div></div>'
         '<div style="height:20px;"></div>'
-        '<div class="bar" style="height:20px;"><i style="width:18%;"></i></div>'
+        '<div class="bar" style="height:20px;"><i style="width:12%;"></i></div>'
     )
     out.append(
         '<div class="slide">' + head +
-        head_block("CHAPTER 07 · 상대의 속마음", "속마음이랑 재회 확률,<br>%로 추정해줘요.", htop=326, hsize=46) +
+        head_block("상대 속마음 · 재회", "속마음이랑 재회 권장도,<br>솔직히 말해줄게요.", htop=326, hsize=46) +
         f'<div class="panel" style="top:548px;">{inner}</div>'
         + arr + '</div>'
     )
